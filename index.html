@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#111216" name="theme-color"/>
+<title>칠요관리국 · 七曜管理局</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#111216;--paper:#f5f6f8;--white:#fff;--violet:#7047d8;--violet2:#a990ff;--line:#d8dbe1;--muted:#666b74;--green:#258a5b;--red:#c84b45;--gold:#b58419;--steel:#727782;--blue:#367fa5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#0d0e11}
+body{margin:0;background:#0d0e11;color:#202229;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;overflow-x:hidden}
+button,a{font:inherit}
+button{border:0}
+::selection{background:#dcd1ff;color:#24184a}
+.site-shell{min-height:100vh;background:linear-gradient(180deg,#111216 0,#15161a 42%,#0d0e11 100%)}
+.topbar{position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px clamp(14px,3vw,34px);background:rgba(17,18,22,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;color:#fff;cursor:pointer}
+.brand-mark{width:30px;height:30px;display:grid;place-items:center;border:1px solid #7654de;background:linear-gradient(135deg,#27232f,#17181d);color:#bba8ff;font-size:15px;box-shadow:0 0 18px rgba(112,71,216,.24)}
+.brand-copy{min-width:0}
+.brand-copy strong{display:block;font-size:11px;letter-spacing:.09em;white-space:nowrap}
+.brand-copy span{display:block;margin-top:1px;color:#8e91a0;font-size:7px;letter-spacing:.17em;white-space:nowrap}
+.main-nav{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none}
+.main-nav::-webkit-scrollbar{display:none}
+.nav-btn{position:relative;flex:0 0 auto;padding:8px 10px;background:transparent;color:#8f929c;font-size:8px;font-weight:800;letter-spacing:.13em;cursor:pointer;transition:.25s ease}
+.nav-btn:after{content:"";position:absolute;left:10px;right:10px;bottom:3px;height:2px;background:#8057e4;transform:scaleX(0);transition:.25s ease}
+.nav-btn:hover,.nav-btn.active{color:#fff}
+.nav-btn.active:after{transform:scaleX(1)}
+.site-main{position:relative}
+.view{display:none;min-height:calc(100vh - 53px);animation:viewIn .48s cubic-bezier(.2,.8,.2,1)}
+.view.active{display:block}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.home{position:relative;min-height:calc(100vh - 53px);overflow:hidden;background:#111216}
+.home:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000 0%,transparent 80%)}
+.home:after{content:"";position:absolute;width:560px;height:560px;right:-220px;top:-180px;border-radius:50%;background:radial-gradient(circle,rgba(112,71,216,.25),rgba(112,71,216,.05) 36%,transparent 70%);filter:blur(4px);animation:halo 9s ease-in-out infinite alternate}
+@keyframes halo{to{transform:translate(-70px,70px) scale(1.12);opacity:.65}}
+.hero{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:clamp(54px,9vw,105px) 5% 50px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:clamp(28px,6vw,76px);align-items:center}
+.hero-kicker{margin:0 0 14px;color:#a990ff;font-size:9px;font-weight:700;letter-spacing:.22em}
+.hero h1{margin:0;color:#fff;font-size:clamp(38px,8vw,78px);line-height:.95;letter-spacing:-.075em;font-weight:900}
+.hero h1 span{display:block;margin-top:12px;color:#aaa7b0;font-size:.34em;letter-spacing:.04em;font-weight:600}
+.hero-copy{max-width:640px;margin:24px 0 0;color:#b9bbc3;font-size:clamp(13px,1.5vw,16px);line-height:1.9}
+.hero-copy strong{color:#eceaf3}
+.hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.hero-btn{padding:11px 15px;border:1px solid #4a4658;background:#1b1c21;color:#ececf2;font-size:9px;font-weight:800;letter-spacing:.12em;cursor:pointer;transition:.25s ease}
+.hero-btn.primary{background:#7047d8;border-color:#7047d8}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(0,0,0,.2)}
+.archive-object{position:relative;height:370px;perspective:900px}
+.folder{position:absolute;inset:26px 10px 12px 16px;border:1px solid #32343c;background:linear-gradient(145deg,#26272c,#17181c);box-shadow:24px 28px 50px rgba(0,0,0,.34);transform:rotateY(-8deg) rotateZ(2deg);animation:folderFloat 6s ease-in-out infinite}
+.folder:before{content:"";position:absolute;left:22px;top:-19px;width:44%;height:20px;background:#24252a;border:1px solid #34363e;border-bottom:0;border-radius:5px 12px 0 0}
+.paper-card{position:absolute;left:10%;right:8%;top:8%;bottom:9%;padding:28px 25px;background:#f4f5f7;border:1px solid #d5d8df;box-shadow:-12px 14px 30px rgba(0,0,0,.24);transform:rotate(-2deg);overflow:hidden}
+.paper-card:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(35,38,46,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(35,38,46,.055) 1px,transparent 1px);background-size:24px 24px;opacity:.8}
+.paper-inner{position:relative}
+.paper-code{margin:0;color:#7047d8;font-size:8px;font-weight:800;letter-spacing:.18em}
+.paper-title{margin:10px 0 3px;font-size:27px;font-weight:900;letter-spacing:-.06em}
+.paper-sub{margin:0;color:#6a6e76;font-size:9px;letter-spacing:.08em}
+.file-rule{height:2px;margin:20px 0;background:#202126}
+.file-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:17px}
+.file-grid i{display:block;height:58px;border-top:4px solid var(--c);background:#fff;border-left:1px solid #dddfe4;border-right:1px solid #dddfe4;border-bottom:1px solid #dddfe4}
+.file-seal{position:absolute;right:21px;bottom:19px;width:74px;height:74px;border:2px solid rgba(112,71,216,.42);border-radius:50%;display:grid;place-items:center;color:rgba(112,71,216,.52);font-size:8px;font-weight:900;letter-spacing:.08em;transform:rotate(-12deg)}
+@keyframes folderFloat{50%{transform:translateY(-10px) rotateY(-5deg) rotateZ(1deg)}}
+.element-strip{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 5% 64px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.element-strip div{height:4px;background:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 40%,transparent)}
+.home-links{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 5% 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.home-card{position:relative;overflow:hidden;padding:22px 20px;min-height:154px;background:#f5f6f8;border-top:4px solid #7047d8;cursor:pointer;transition:.3s ease}
+.home-card:before{content:"";position:absolute;inset:auto -30px -60px auto;width:140px;height:140px;border:1px solid rgba(112,71,216,.15);transform:rotate(45deg)}
+.home-card:hover{transform:translateY(-6px);box-shadow:0 18px 38px rgba(0,0,0,.25)}
+.home-card small{color:#7047d8;font-size:8px;font-weight:800;letter-spacing:.16em}
+.home-card h2{margin:9px 0 7px;font-size:19px;letter-spacing:-.04em}
+.home-card p{margin:0;color:#656a72;font-size:10px;line-height:1.65}
+.home-card b{position:absolute;right:15px;bottom:10px;color:#b9a9ee;font-size:27px;font-weight:400}
+.content-stage{padding:24px 14px 60px;background:#0d0e11}
+.content-stage>.inner{max-width:1100px;margin:0 auto}
+.document-wrap{animation:paperRise .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes paperRise{from{opacity:0;transform:translateY(16px) scale(.995)}to{opacity:1;transform:none}}
+#world-view .document-wrap>div,#guide-view .document-wrap>div{max-width:980px!important;margin-left:auto!important;margin-right:auto!important}
+.roster-view{min-height:calc(100vh - 53px);padding-bottom:70px;background:#f3f4f6}
+.roster-head{position:relative;overflow:hidden;padding:54px 5% 46px;background:#111216;color:#fff;border-bottom:7px solid #7047d8}
+.roster-head:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:28px 28px}
+.roster-head-inner{position:relative;max-width:1060px;margin:0 auto}
+.roster-head small{color:#a990ff;font-size:8px;font-weight:800;letter-spacing:.18em}
+.roster-head h2{margin:8px 0 7px;font-size:clamp(28px,5vw,48px);letter-spacing:-.06em}
+.roster-head p{margin:0;max-width:650px;color:#aeb1bb;font-size:11px;line-height:1.8}
+.roster-grid{max-width:1060px;margin:0 auto;padding:30px 5%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.roster-card{position:relative;min-width:0;background:#fff;border:1px solid #d8dbe1;cursor:pointer;overflow:hidden;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;animation:cardIn .55s both}
+.roster-card:nth-child(2){animation-delay:.06s}.roster-card:nth-child(3){animation-delay:.12s}.roster-card:nth-child(4){animation-delay:.18s}.roster-card:nth-child(5){animation-delay:.24s}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.roster-card:hover{transform:translateY(-7px);box-shadow:0 18px 34px rgba(24,25,30,.16);border-color:var(--accent)}
+.id-photo{position:relative;aspect-ratio:3/4;overflow:hidden;background:#e7e9ed}
+.id-photo:after{content:"VIEW FILE";position:absolute;inset:auto 10px 10px auto;padding:4px 7px;background:rgba(17,18,22,.82);color:#fff;font-size:6px;font-weight:800;letter-spacing:.13em;opacity:0;transform:translateY(5px);transition:.25s ease}
+.roster-card:hover .id-photo:after{opacity:1;transform:none}
+.id-photo img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;filter:saturate(.92) contrast(1.02);transition:transform .45s ease,filter .45s ease}
+.roster-card:hover .id-photo img{transform:scale(1.035);filter:saturate(1.03)}
+.roster-meta{padding:12px 11px 14px;border-top:4px solid var(--accent)}
+.roster-meta small{display:block;color:var(--accent);font-size:6.5px;font-weight:800;letter-spacing:.12em}
+.roster-meta strong{display:block;margin-top:5px;color:#1b1c20;font-size:14px;letter-spacing:-.03em}
+.roster-meta span{display:block;margin-top:3px;color:#737780;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.roster-sections{max-width:1120px;margin:0 auto;padding:30px 5% 8px}
+.roster-section{margin-bottom:34px}
+.roster-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #cfd2d8}
+.roster-section-title small{display:block;color:#7047d8;font-size:7px;font-weight:800;letter-spacing:.16em}
+.roster-section-title h3{margin:5px 0 0;color:#17181c;font-size:18px;letter-spacing:-.04em}
+.roster-section-note{margin:0;color:#7b7f88;font-size:8px;text-align:right}
+.roster-grid{max-width:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.roster-card{position:relative}
+.roster-status{position:absolute;z-index:2;top:8px;right:8px;padding:4px 7px;border:1px solid rgba(255,255,255,.25);background:rgba(17,18,22,.82);backdrop-filter:blur(7px);color:#fff;font-size:6px;font-weight:900;letter-spacing:.12em}
+.roster-status.locked{border-color:rgba(200,75,69,.55);color:#ffd8d5}
+.roster-status.prep{border-color:rgba(169,144,255,.55);color:#e3d9ff}
+.archive-placeholder{padding:clamp(30px,6vw,64px);background:#f5f6f8;color:#202229;min-height:420px;display:flex;align-items:center;justify-content:center}
+.archive-placeholder-card{width:min(100%,720px);background:#fff;border:1px solid #d8dbe1;box-shadow:8px 9px 0 #e3e5e9}
+.archive-placeholder-top{padding:14px 18px;background:#202126;color:#f2eff8;border-bottom:4px solid #7047d8}
+.archive-placeholder-top small{color:#ad95ff;font-size:7px;font-weight:800;letter-spacing:.16em}
+.archive-placeholder-body{padding:28px 24px}
+.archive-placeholder-code{margin:0 0 8px;color:#7047d8;font-size:8px;font-weight:900;letter-spacing:.16em}
+.archive-placeholder-body h3{margin:0;color:#16171b;font-size:clamp(22px,4vw,34px);letter-spacing:-.05em}
+.archive-placeholder-body p{margin:13px 0 0;color:#656a72;font-size:11px;line-height:1.8}
+.archive-placeholder-stamp{display:inline-block;margin-top:22px;padding:8px 12px;border:2px solid #7047d8;color:#7047d8;font-size:9px;font-weight:900;letter-spacing:.12em;transform:rotate(-2deg)}
+.archive-placeholder-stamp.restricted{border-color:#a74440;color:#a74440}
+
+.modal{position:fixed;inset:0;z-index:120;display:none;align-items:flex-start;justify-content:center;padding:clamp(10px,3vw,30px);background:rgba(8,9,12,.78);backdrop-filter:blur(12px);overflow:auto}
+.modal.open{display:flex;animation:modalFade .25s ease}
+@keyframes modalFade{from{opacity:0}to{opacity:1}}
+.modal-panel{position:relative;width:min(100%,1040px);margin:auto;background:#111216;border:1px solid #373943;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:modalUp .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes modalUp{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+.modal-tools{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:8px;background:#111216;border-bottom:1px solid #30323a}
+.modal-close{width:34px;height:34px;border:1px solid #454752;background:#202126;color:#fff;cursor:pointer;font-size:17px;transition:.2s ease}
+.modal-close:hover{background:#7047d8;border-color:#7047d8}
+.modal-content>div{width:100%!important}
+.no-scroll{overflow:hidden}
+.mobile-hint{display:none}
+@media(max-width:900px){
+.hero{grid-template-columns:1fr;padding-top:58px}.archive-object{height:310px;max-width:470px;width:100%;margin:0 auto}.home-links{grid-template-columns:1fr 1fr}.home-card:last-child{grid-column:1/-1}.roster-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:640px){
+.topbar{padding:9px 10px;gap:8px}.brand-mark{width:27px;height:27px}.brand-copy span{display:none}.brand-copy strong{font-size:9px}.nav-btn{padding:7px 7px;font-size:7px}.nav-btn:after{left:7px;right:7px}
+.hero{padding:44px 6% 34px;gap:22px}.hero h1{font-size:44px}.hero-copy{font-size:12px;margin-top:18px}.archive-object{height:265px}.paper-card{padding:20px 17px}.paper-title{font-size:22px}.file-grid i{height:45px}
+.element-strip{padding:0 6% 42px}.home-links{grid-template-columns:1fr;padding:0 6% 60px}.home-card:last-child{grid-column:auto}
+.content-stage{padding:10px 0 42px}.content-stage>.inner{width:100%}
+#world-view .document-wrap>div,#guide-view .document-wrap>div{border-left:0!important;border-right:0!important;box-shadow:none!important}
+.roster-head{padding:39px 6% 34px}.roster-sections{padding:18px 4% 6px}.roster-section{margin-bottom:26px}.roster-section-head{align-items:flex-start;flex-direction:column;gap:5px}.roster-section-note{text-align:left}.roster-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:0;gap:8px}.roster-meta{padding:9px 8px 11px}.roster-meta strong{font-size:12px}.roster-meta span{font-size:7px}
+.modal{padding:0}.modal-panel{width:100%;min-height:100vh;margin:0;border:0}.modal-tools{padding:6px}.mobile-hint{display:block;margin:0;padding:6px 10px;background:#1c1d22;color:#8d91a0;text-align:center;font-size:7px;letter-spacing:.1em}
+}
+@media(max-width:390px){.roster-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero h1{font-size:39px}.archive-object{height:245px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="site-shell">
+<header class="topbar">
+<div class="brand" data-view="home">
+<div class="brand-mark">七</div>
+<div class="brand-copy"><strong>칠요관리국</strong><span>七曜管理局 · PUBLIC ARCHIVE</span></div>
+</div>
+<nav aria-label="주요 메뉴" class="main-nav">
+<button class="nav-btn active" data-view="home">HOME</button>
+<button class="nav-btn" data-view="world">WORLD</button>
+<button class="nav-btn" data-view="guide">GUIDE</button>
+<button class="nav-btn" data-view="roster">ROSTER</button>
+</nav>
+</header>
+<main class="site-main">
+<section class="view active" id="home-view">
+<div class="home">
+<div class="hero">
+<div>
+<p class="hero-kicker">七曜管理局 · OFFICIAL PUBLIC ARCHIVE</p>
+<h1>칠요관리국<span>SHIYO MANAGEMENT BUREAU</span></h1>
+<p class="hero-copy">괴이와 칠요를 조사하고, 판별하고, 그 <strong>귀결을 정하는 국가기관.</strong><br/>공개 세계관 기록과 캐릭터 제작 가이드, 국장단 및 현장부 인물 기록을 열람할 수 있습니다.</p>
+<div class="hero-actions">
+<button class="hero-btn primary" data-view="world">WORLD ARCHIVE</button>
+<button class="hero-btn" data-view="roster">PERSONNEL FILE</button>
+</div>
+</div>
+<div aria-hidden="true" class="archive-object">
+<div class="folder">
+<div class="paper-card">
+<div class="paper-inner">
+<p class="paper-code">七曜管理局 · FILE 2030-SEOUL</p>
+<p class="paper-title">PUBLIC<br/>ARCHIVE</p>
+<p class="paper-sub">괴이 / 칠요 / 귀결 / 현장 기록</p>
+<div class="file-rule"></div>
+<div class="file-grid">
+<i style="--c:#258a5b"></i><i style="--c:#c84b45"></i><i style="--c:#b58419"></i><i style="--c:#727782"></i><i style="--c:#367fa5"></i>
+</div>
+</div>
+<div class="file-seal">七曜<br/>管理局</div>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="element-strip">
+<div style="--c:#258a5b"></div><div style="--c:#c84b45"></div><div style="--c:#b58419"></div><div style="--c:#727782"></div><div style="--c:#367fa5"></div>
+</div>
+<div class="home-links">
+<div class="home-card" data-view="world"><small>01 · WORLD</small><h2>세계관 기록</h2><p>오방신, 칠요, 흐림과 고름, 괴이와 귀결, 관리국의 구조를 열람합니다.</p><b>→</b></div>
+<div class="home-card" data-view="guide"><small>02 · GUIDE</small><h2>캐릭터 제작 가이드</h2><p>일맥·월맥과 오행, 이능, 결, 별호를 순서대로 구성하는 안내서입니다.</p><b>→</b></div>
+<div class="home-card" data-view="roster"><small>03 · ROSTER</small><h2>현장 인물 기록</h2><p>국장단과 현장부 요원들의 증명사진을 선택해 인사기록을 열람할 수 있습니다.</p><b>→</b></div>
+</div>
+</div>
+</section>
+<section class="view" id="world-view">
+<div class="content-stage"><div class="inner"><div class="document-wrap"><div style="width:100%;max-width:980px;margin:0 auto;box-sizing:border-box;background:#111216;color:#202229;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;line-height:1.72;word-break:keep-all;overflow-wrap:anywhere;border:1px solid #24262c;box-shadow:0 18px 48px rgba(0,0,0,0.28);">
+<div style="box-sizing:border-box;width:100%;padding:18px 5% 16px;background:#111216;border-bottom:1px solid #30323a;">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;">
+<p style="margin:0;color:#a990ff;font-size:8.5pt;letter-spacing:0.18em;">七曜管理局 · PUBLIC WORLD ARCHIVE</p>
+<p style="margin:0;padding:4px 9px;border:1px solid #7451df;color:#b9a6ff;font-size:7.5pt;letter-spacing:0.08em;">2030 · SEOUL</p>
+</div>
+</div>
+<div style="box-sizing:border-box;width:100%;padding:34px 5% 30px;background-color:#f5f6f8;background-image:linear-gradient(rgba(35,38,46,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(35,38,46,0.055) 1px,transparent 1px);background-size:30px 30px;border-bottom:7px solid #111216;">
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:stretch;">
+<div style="box-sizing:border-box;flex:2 1 420px;min-width:0;padding:24px 5%;background:#ffffff;border:1px solid #d8dbe1;box-shadow:7px 8px 0 #e3e5e9;">
+<p style="margin:0 0 8px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">OFFICIAL BRIEF · 七曜管理局</p>
+<p style="margin:0;color:#16171b;font-size:clamp(22px,5vw,36px);font-weight:800;letter-spacing:-0.06em;">칠요관리국</p>
+<p style="margin:4px 0 0;color:#62666f;font-size:10pt;">괴이 및 칠요 관리기관</p>
+<hr style="border:0;border-top:1px solid #c9ccd3;margin:20px 0;"/>
+<p style="margin:0;color:#292b31;font-size:11.5pt;font-weight:700;">“혼란은 사라지지 않는다<br/>다만 그것에 자리를 정한다”</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:20px;background:#202126;color:#f0eef5;border-top:4px solid #7047d8;">
+<p style="margin:0 0 12px;color:#ad96ff;font-size:8pt;letter-spacing:0.14em;">FILE SUMMARY</p>
+<p style="margin:0 0 7px;font-size:9.5pt;"><span style="color:#9b8cb8;">기관</span> · 칠요관리국</p>
+<p style="margin:0 0 7px;font-size:9.5pt;"><span style="color:#9b8cb8;">관할</span> · 대한민국</p>
+<p style="margin:0 0 7px;font-size:9.5pt;"><span style="color:#9b8cb8;">본부</span> · 서울 중구 남산 북동사면</p>
+<p style="margin:0 0 7px;font-size:9.5pt;"><span style="color:#9b8cb8;">대상</span> · 괴이 / 내림자 / 사맥</p>
+<p style="margin:0;font-size:9.5pt;"><span style="color:#9b8cb8;">원칙</span> · 파괴보다 정돈</p>
+</div>
+</div>
+<div style="box-sizing:border-box;margin-top:28px;padding:19px 5%;background:#ffffff;border-left:4px solid #7047d8;border-right:1px solid #d7d9df;">
+<p style="margin:0 0 6px;">대한민국에는 인간의 상식만으로 설명할 수 없는 존재와 현상이 실재한다</p>
+<p style="margin:0 0 6px;">죽은 자가 떠나지 못하고, 오래된 감정이 형체를 얻으며, 본래 선했던 것이 뒤틀리고, 때로는 존재하지 않아야 할 장소가 현실에 나타난다</p>
+<p style="margin:0 0 6px;"><strong>우리는 그것들을 통틀어 괴이라 부른다</strong></p>
+<p style="margin:0;">괴이가 인간의 삶을 침범하지 않도록 관리하는 국가기관이 <strong>칠요관리국(七曜管理局)</strong>, 통칭 <strong>칠요국</strong>이다</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;">
+<a href="#origin" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">五方神</a>
+<a href="#system" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">七曜</a>
+<a href="#sync" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">흐림 · 고름</a>
+<a href="#link" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">結</a>
+<a href="#anomaly" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">怪異 · 歸結</a>
+<a href="#agency" style="flex:1 1 120px;box-sizing:border-box;text-align:center;padding:8px 10px;background:#202126;color:#f1eef8;text-decoration:none;font-size:8.5pt;border-bottom:2px solid #7047d8;">管理局</a>
+</div>
+</div>
+<div id="origin" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#ffffff;border-bottom:8px solid #111216;">
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;">
+<div style="box-sizing:border-box;flex:1 1 240px;min-width:0;padding:22px;background:#202126;color:#f0eef4;border-top:4px solid #7047d8;">
+<p style="margin:0 0 6px;color:#aa91ff;font-size:8pt;letter-spacing:0.16em;">ORIGIN · 五方神</p>
+<p style="margin:0 0 16px;font-size:18pt;font-weight:800;letter-spacing:-0.04em;">오래전,<br/>다섯 방향에<br/>신이 남았다</p>
+<hr style="border:0;border-top:1px solid #444750;margin:0 0 16px;"/>
+<p style="margin:0;color:#bfc1c9;font-size:9.5pt;">소멸을 앞둔 태고신은 자신의 힘을 다섯 신수에게 나누었다</p>
+</div>
+<div style="box-sizing:border-box;flex:2 1 420px;min-width:0;">
+<p style="margin:0 0 6px;">태고에는 세계의 질서를 관장하는 하나의 신이 있었다고 전해진다</p>
+<p style="margin:0 0 6px;">그러나 모종의 이유로 그 신은 비틀렸고, 그와 함께 세계의 질서에도 균열이 생겼다</p>
+<p style="margin:0 0 6px;">소멸을 앞둔 태고신은 자신의 힘을 다섯 신수에게 나누어주었다</p>
+<p style="margin:0 0 18px;">오늘날 <strong>오방신(五方神)</strong>이라 불리는 존재들이다</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;width:100%;">
+<div style="box-sizing:border-box;flex:1 1 150px;min-width:0;padding:12px;background:#f5faf7;border:1px solid #d9e8df;border-top:3px solid #258a5b;">
+<p style="margin:0;color:#17613f;font-weight:800;">靑龍 · 청룡</p>
+<p style="margin:3px 0 0;color:#4f6659;font-size:9pt;">동 · 목(木)</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 150px;min-width:0;padding:12px;background:#fff7f7;border:1px solid #efdada;border-top:3px solid #c84b45;">
+<p style="margin:0;color:#913631;font-weight:800;">朱雀 · 주작</p>
+<p style="margin:3px 0 0;color:#735c5b;font-size:9pt;">남 · 화(火)</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 150px;min-width:0;padding:12px;background:#fffbf1;border:1px solid #eadfbe;border-top:3px solid #b58419;">
+<p style="margin:0;color:#806014;font-weight:800;">黃龍 · 황룡</p>
+<p style="margin:3px 0 0;color:#716950;font-size:9pt;">중앙 · 토(土)</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 150px;min-width:0;padding:12px;background:#f7f8fa;border:1px solid #dcdfe4;border-top:3px solid #727782;">
+<p style="margin:0;color:#4d515a;font-weight:800;">白虎 · 백호</p>
+<p style="margin:3px 0 0;color:#666a72;font-size:9pt;">서 · 금(金)</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 150px;min-width:0;padding:12px;background:#f4f9fc;border:1px solid #d7e5ec;border-top:3px solid #367fa5;">
+<p style="margin:0;color:#265f7a;font-weight:800;">玄武 · 현무</p>
+<p style="margin:3px 0 0;color:#566d79;font-size:9pt;">북 · 수(水)</p>
+</div>
+</div>
+</div>
+</div>
+<div style="margin-top:24px;padding:18px 4%;background:#f1edff;border:1px solid #d8ceff;">
+<p style="margin:0 0 6px;">오방신은 태고신 그 자체가 아니었다</p>
+<p style="margin:0 0 6px;">태고신이 사라진 뒤 생겨난 혼란을 완전히 없애는 것은 더 이상 불가능해졌다</p>
+<p style="margin:0 0 6px;">다섯 신수가 택한 것은 <strong>파괴가 아닌 정돈, 배제가 아닌 공생</strong>이었다</p>
+<p style="margin:0;">괴이를 발견했다고 해서 반드시 없애지는 않는다 무엇인지 밝히고, 무엇이 되어야 하는지 판단한 뒤, 있어야 할 자리로 돌려보낸다</p>
+</div>
+<p style="margin:22px 0 0;padding:13px 4%;background:#27232f;color:#f0eaff;text-align:center;border-top:3px solid #7047d8;">
+<strong>퇴마란 괴이를 없애는 일이 아니라, 혼란의 귀결을 정하는 일이다</strong>
+</p>
+</div>
+<div id="system" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f3f4f6;border-bottom:8px solid #111216;">
+<div style="background:#ffffff;border:1px solid #d3d6dc;box-shadow:8px 9px 0 #e1e3e7;">
+<div style="box-sizing:border-box;padding:20px 5%;border-bottom:1px solid #d3d6dc;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">SYSTEM · 七曜</p>
+<p style="margin:0;font-size:20pt;font-weight:800;">칠요(七曜)</p>
+</div>
+<div style="box-sizing:border-box;padding:22px 5%;">
+<p style="margin:0 0 7px;">오방신에게 나뉜 힘은 오랜 세월이 흐른 지금도 인간에게 이어지고 있다</p>
+<p style="margin:0 0 7px;">인간에게 초상적인 힘이 발현되는 현상을 <strong>내림</strong>이라 한다</p>
+<p style="margin:0 0 7px;">내림을 받는다는 것은 오방신 중 하나에게서 이어진 힘의 일부를 인간의 몸에 내려받는 것을 의미한다</p>
+<p style="margin:0 0 7px;">모든 내림자의 힘에는 반드시 하나의 오방신 계통이 존재하며, 그것이 개인의 오행 속성으로 나타난다</p>
+<p style="margin:0 0 15px;color:#653bd1;"><strong>어떤 오행을 지녔는가는 어느 신의 힘이 그 사람에게 닿았는가를 뜻한다</strong></p>
+<p style="margin:0 0 7px;">내림을 받은 사람은 여기에 더해 일(日) 또는 월(月)의 체질을 가진다</p>
+<p style="margin:0;">일월과 오행으로 이루어진 인간의 초상 능력 체계를 통틀어 <strong>칠요(七曜)</strong>라 한다</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;">
+<div style="box-sizing:border-box;flex:1 1 260px;min-width:0;padding:17px;background:#202126;color:#f0eef4;border-top:4px solid #b89b57;">
+<p style="margin:0;font-size:14pt;font-weight:800;">日 · 일맥(日脈)</p>
+<p style="margin:3px 0 12px;color:#c8ae70;font-size:8pt;letter-spacing:0.12em;">SENTINEL</p>
+<p style="margin:0;font-size:9.8pt;">태양의 성질을 지닌 자 자신이 내려받은 오행의 힘을 현실에 직접 현현하고 행사하는 데 뛰어나다 공격·전투뿐 아니라 탐지, 방어, 추적, 정신 간섭 등 형태는 개인마다 다르다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 260px;min-width:0;padding:17px;background:#282331;color:#f2edfa;border-top:4px solid #7a4de4;">
+<p style="margin:0;font-size:14pt;font-weight:800;">月 · 월맥(月脈)</p>
+<p style="margin:3px 0 12px;color:#bba6ff;font-size:8pt;letter-spacing:0.12em;">GUIDE</p>
+<p style="margin:0;font-size:9.8pt;">달의 성질을 지닌 자 힘을 받아들이고 조절하며 흐트러진 상태를 안정시키는 데 뛰어나다 월맥 역시 고유한 이능을 가지며 반드시 비전투 인력인 것은 아니다</p>
+</div>
+</div>
+</div>
+</div>
+<div style="margin-top:34px;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.15em;">ELEMENT INDEX · 五行</p>
+<p style="margin:0 0 18px;font-size:16pt;font-weight:800;">오행과 오방신</p>
+<p style="margin:0 0 7px;">오행은 내림의 출처와 기본적인 성질을 나타낸다</p>
+<p style="margin:0 0 18px;">같은 신의 힘을 내려받았다고 해서 같은 능력을 갖는 것은 아니다 힘은 개인의 기질과 내림의 양상에 따라 전혀 다른 형태로 발현될 수 있다</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;">
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:15px;background:#ffffff;border:1px solid #dce4df;border-left:4px solid #258a5b;">
+<p style="margin:0 0 5px;color:#17613f;font-weight:800;">靑龍 · 청룡 · 木</p>
+<p style="margin:0 0 7px;color:#47705b;font-size:9pt;">생명 · 성장 · 확장 · 재생 · 증식 · 연결</p>
+<p style="margin:0;font-size:9.5pt;">식물 조작 · 재생 · 생명력 감지 · 신체 강화 · 증식 · 뿌리·덩굴 생성</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:15px;background:#ffffff;border:1px solid #eadada;border-left:4px solid #c84b45;">
+<p style="margin:0 0 5px;color:#913631;font-weight:800;">朱雀 · 주작 · 火</p>
+<p style="margin:0 0 7px;color:#87514e;font-size:9pt;">불 · 열 · 빛 · 연소 · 폭발 · 활성</p>
+<p style="margin:0;font-size:9.5pt;">화염 · 체온 조작 · 발광 · 폭발 · 열 조작 · 귀기 연소</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:15px;background:#ffffff;border:1px solid #e7dfc7;border-left:4px solid #b58419;">
+<p style="margin:0 0 5px;color:#806014;font-weight:800;">黃龍 · 황룡 · 土</p>
+<p style="margin:0 0 7px;color:#836e38;font-size:9pt;">땅 · 중심 · 중량 · 고정 · 안정 · 영역</p>
+<p style="margin:0;font-size:9.5pt;">토석 조작 · 중력 · 방벽 · 진동 · 영역 고정 · 감각 안정</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:15px;background:#ffffff;border:1px solid #dde0e5;border-left:4px solid #727782;">
+<p style="margin:0 0 5px;color:#4d515a;font-weight:800;">白虎 · 백호 · 金</p>
+<p style="margin:0 0 7px;color:#626872;font-size:9pt;">금속 · 강성 · 날카로움 · 절단 · 수렴 · 관통</p>
+<p style="margin:0;font-size:9.5pt;">금속 조작 · 무기 생성 · 절단 · 경질화 · 자력 · 관통</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:15px;background:#ffffff;border:1px solid #d8e4ea;border-left:4px solid #367fa5;">
+<p style="margin:0 0 5px;color:#265f7a;font-weight:800;">玄武 · 현무 · 水</p>
+<p style="margin:0 0 7px;color:#4e7082;font-size:9pt;">물 · 흐름 · 냉기 · 순환 · 침투 · 흡수</p>
+<p style="margin:0;font-size:9.5pt;">물 조작 · 얼음 · 안개 · 흡수 · 흐름 제어 · 감각·기운의 순환</p>
+</div>
+</div>
+<p style="margin:16px 0 0;color:#777b82;font-size:9pt;">표에 제시된 능력은 대표적인 예시다</p>
+<p style="margin:4px 0 0;color:#653bd1;font-weight:700;">오행은 힘의 답을 정하지 않는다 다만 그 힘이 어디에서 왔는지를 말해준다</p>
+</div>
+</div>
+<div id="sync" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#17181c;color:#dedfe4;border-bottom:8px solid #0e0f12;">
+<p style="margin:0 0 5px;color:#a98dff;font-size:8pt;letter-spacing:0.16em;">SYNC · 日月</p>
+<p style="margin:0 0 20px;font-size:19pt;font-weight:800;color:#f6f4fa;">흐림과 고름</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;">
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#222328;border:1px solid #393b42;border-top:4px solid #a75b58;">
+<p style="margin:0 0 5px;color:#e0aaa6;font-size:13pt;font-weight:800;">흐림</p>
+<p style="margin:0 0 11px;color:#90939b;font-size:8pt;letter-spacing:0.1em;">폭주 대응 개념</p>
+<p style="margin:0;">칠요의 흐름이 불안정해져 이능과 정신, 신체의 제어가 무너지는 현상 일맥과 월맥 모두 겪을 수 있으나 일맥에게 그 빈도와 위험성이 훨씬 강하다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#25212d;border:1px solid #41394d;border-top:4px solid #7a4de4;">
+<p style="margin:0 0 5px;color:#cdbbff;font-size:13pt;font-weight:800;">고름</p>
+<p style="margin:0 0 11px;color:#9b91a8;font-size:8pt;letter-spacing:0.1em;">가이딩 대응 개념</p>
+<p style="margin:0;">월맥이 흐트러진 칠요를 조율하여 안정시키는 행위 고름은 월맥만이 할 수 있으며 방식과 효율은 개인의 능력과 속성에 따라 달라진다</p>
+</div>
+</div>
+<p style="margin:22px 0 0;padding:12px 4%;text-align:center;background:#292431;color:#e4dbff;border-top:1px solid #574770;border-bottom:1px solid #574770;">
+<strong>흐리면 고른다 그것이 일맥과 월맥이 함께 존재해 온 방식이다</strong>
+</p>
+</div>
+<div id="link" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f4f5f7;border-bottom:8px solid #111216;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">LINK · 結</p>
+<p style="margin:0 0 20px;font-size:19pt;font-weight:800;">결, 결합도, 연맥</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;">
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:17px;background:#ffffff;border:1px solid #d5d7dd;border-top:3px solid #7047d8;">
+<p style="margin:0 0 8px;color:#653bd1;font-size:13pt;font-weight:800;">結 · 결</p>
+<p style="margin:0;">공명·상성에 대응하는 개념 일맥과 월맥의 힘이 서로 맞물리는 성질을 뜻한다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:17px;background:#ffffff;border:1px solid #d5d7dd;border-top:3px solid #7047d8;">
+<p style="margin:0 0 8px;color:#653bd1;font-size:13pt;font-weight:800;">결합도</p>
+<p style="margin:0;">두 내림자의 결이 얼마나 잘 맞는지를 수치화한 값 높을수록 일반적으로 고름의 효율과 안정성이 높지만 감정이나 인간관계까지 결정하지는 않는다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:17px;background:#ffffff;border:1px solid #d5d7dd;border-top:3px solid #7047d8;">
+<p style="margin:0 0 8px;color:#653bd1;font-size:13pt;font-weight:800;">連脈 · 연맥</p>
+<p style="margin:0;">특정 일맥과 월맥이 지속적인 관계를 형성한 상태 연맥 관계 형성을 ‘연을 맺는다’고 표현하며 업무 파트너, 친구, 가족, 연인 등 관계 형태에는 제한이 없다</p>
+</div>
+</div>
+</div>
+<div id="anomaly" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#ffffff;border-bottom:8px solid #111216;">
+<div style="display:flex;flex-wrap:wrap;gap:18px;">
+<div style="box-sizing:border-box;flex:2 1 420px;min-width:0;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">ANOMALY · 歸結</p>
+<p style="margin:0 0 17px;font-size:19pt;font-weight:800;">괴이와 귀결</p>
+<p style="margin:0 0 7px;">괴이는 특정한 종족을 뜻하지 않는다</p>
+<p style="margin:0 0 7px;">죽은 자의 혼, 감정이 독립된 존재, 뒤틀린 수호물, 저주받은 물건, 변질된 장소, 설명할 수 없는 현상까지 모두 괴이가 될 수 있다</p>
+<p style="margin:0;color:#653bd1;font-weight:700;">중요한 것은 무엇처럼 생겼는가가 아니라 현재 무엇으로 존재하고 있는가이다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:18px;background:#202126;color:#e4e5e9;border-top:4px solid #7047d8;">
+<p style="margin:0 0 5px;color:#a88fff;font-size:8pt;letter-spacing:0.14em;">PROCESS</p>
+<p style="margin:0 0 7px;">01 · 조사</p>
+<p style="margin:0 0 7px;">02 · 판별</p>
+<p style="margin:0 0 7px;">03 · 귀결 결정</p>
+<p style="margin:0;">04 · 집행</p>
+</div>
+</div>
+<p style="margin:22px 0 14px;">칠요국은 조사와 판별을 거쳐 괴이의 귀결을 셋 중 하나로 결정한다</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;">
+<div style="box-sizing:border-box;flex:1 1 210px;min-width:0;padding:17px;background:#f6f7f8;border:1px solid #dfe1e5;border-top:4px solid #858990;">
+<p style="margin:0 0 7px;font-size:13pt;font-weight:800;">消滅 · 소멸</p>
+<p style="margin:0;font-size:9.5pt;">존재 자체를 완전히 끝낸다 현세와 저승 어디에도 남지 않는다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 210px;min-width:0;padding:17px;background:#f6f7f8;border:1px solid #dfe1e5;border-top:4px solid #608b75;">
+<p style="margin:0 0 7px;font-size:13pt;font-weight:800;">淨化 · 정화</p>
+<p style="margin:0;font-size:9.5pt;">오염과 뒤틀림을 제거해 본래의 성질로 되돌린다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 210px;min-width:0;padding:17px;background:#f6f7f8;border:1px solid #dfe1e5;border-top:4px solid #527f9b;">
+<p style="margin:0 0 7px;font-size:13pt;font-weight:800;">薦度 · 천도</p>
+<p style="margin:0;font-size:9.5pt;">현세에 머무는 혼이나 존재를 저승으로 보낸다</p>
+</div>
+</div>
+<p style="margin:17px 0 0;">같은 형태의 괴이라 해도 귀결은 달라질 수 있다</p>
+<p style="margin:4px 0 0;color:#653bd1;font-weight:700;">그러므로 칠요국의 퇴마는 제압보다 판별에서 시작한다</p>
+<div style="margin-top:34px;padding:21px 5%;background:#241e23;color:#e2d9db;border-left:5px solid #a75b58;">
+<p style="margin:0 0 5px;color:#dc8c85;font-size:8pt;letter-spacing:0.16em;">UNAUTHORIZED · 私脈</p>
+<p style="margin:0 0 13px;color:#f4edef;font-size:16pt;font-weight:800;">사맥(私脈)</p>
+<p style="margin:0 0 7px;">내림을 받았다고 해서 모두가 칠요국의 뜻을 따르는 것은 아니다</p>
+<p style="margin:0 0 7px;">자신의 맥을 괴이의 정돈이나 공익이 아니라 개인의 욕망, 이익, 범죄에 사용하는 자들을 사맥이라 한다</p>
+<p style="margin:0 0 7px;">사맥은 단일 조직이 아니라 개인 범죄자부터 이해관계로 엮인 세력까지 내림의 힘을 사적으로 악용하는 이들을 포괄하는 명칭이다</p>
+<p style="margin:0 0 14px;">괴이를 이용·거래하거나 저주를 행사하고, 귀결되어야 할 괴이를 목적을 위해 붙잡아두는 행위 역시 이에 포함된다</p>
+<p style="margin:0;padding-top:12px;border-top:1px solid #60484d;color:#e1c4c8;"><strong>힘의 출처는 같다 그것을 어디에 쓰는지가 사맥과 다른 내림자들의 명명을 가른다</strong></p>
+</div>
+</div>
+<div id="agency" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f4f5f7;border-bottom:8px solid #111216;">
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;">
+<div style="box-sizing:border-box;flex:1 1 230px;min-width:0;padding:22px;background:#202126;color:#f0eef4;border-top:4px solid #7047d8;">
+<p style="margin:0 0 5px;color:#ad95ff;font-size:8pt;letter-spacing:0.16em;">AGENCY · 七曜管理局</p>
+<p style="margin:0 0 13px;font-size:18pt;font-weight:800;">칠요관리국</p>
+<p style="margin:0;color:#b4b5bd;font-size:9.5pt;">대한민국 괴이·칠요 관리기관</p>
+</div>
+<div style="box-sizing:border-box;flex:2 1 420px;min-width:0;">
+<p style="margin:0 0 7px;">칠요관리국은 대한민국에 설치된 괴이 및 칠요 관리기관이다</p>
+<p style="margin:0 0 7px;">국민에게 존재가 공개되어 있으며 괴이 사건의 조사와 귀결, 내림자 관리, 사맥 관련 사건 대응 등을 담당한다</p>
+<p style="margin:0 0 7px;">칠요국 소속 요원은 사회적으로 높은 존경을 받는다</p>
+<p style="margin:0 0 7px;">동시에 인간이 보지 못하는 것을 보고 다루지 못하는 힘을 사용하는 사람들이기에 경외와 기피의 대상이 되기도 한다</p>
+<p style="margin:0;color:#653bd1;font-weight:700;">대중은 그들이 지키는 평화를 인정하면서도 그들과 가까워지는 것은 꺼린다</p>
+</div>
+</div>
+<div style="margin-top:34px;background:#ffffff;border:1px solid #d4d6dc;">
+<div style="box-sizing:border-box;padding:16px 4%;background:#24252a;color:#eeeef2;border-bottom:3px solid #7047d8;">
+<p style="margin:0 0 4px;color:#ad95ff;font-size:8pt;letter-spacing:0.15em;">HEADQUARTERS · 木覓山</p>
+<p style="margin:0;font-size:15pt;font-weight:800;">본부</p>
+</div>
+<div style="box-sizing:border-box;padding:18px 4%;">
+<p style="margin:0 0 7px;">칠요관리국 본부는 서울특별시 중구, 장충동·필동 일대 남산 북동사면에 위치한다</p>
+<p style="margin:0 0 7px;">과거 한양도성 안에 해당하는 지역으로 남산과 성곽을 가까이 두고 있다</p>
+<p style="margin:0 0 7px;">본부는 도심의 단일 청사가 아니라 대학 캠퍼스에 가까운 규모의 독립 부지로 조성되어 있으며 여러 동의 건물과 훈련·의료·연구시설이 자리한다</p>
+<p style="margin:0 0 7px;">외부에서 보이는 시설보다 지하의 규모가 훨씬 크다</p>
+<p style="margin:0;">오늘날의 칠요국이 성립하기 훨씬 이전부터 목멱산 일대가 이변을 감시하고 다루는 장소로 사용되었다는 기록 또한 남아 있다</p>
+</div>
+<p style="margin:0;padding:11px 4%;background:#eeeaff;text-align:center;color:#5e38c6;font-weight:700;">서울은 오래전부터 이곳을 중심으로 괴이와 함께 살아왔다</p>
+</div>
+<div style="margin-top:34px;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">STRUCTURE · 組織</p>
+<p style="margin:0 0 17px;font-size:17pt;font-weight:800;">조직</p>
+<div style="display:flex;flex-wrap:wrap;gap:9px;">
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:15px;background:#ffffff;border:1px solid #dce4df;border-left:4px solid #258a5b;">
+<p style="margin:0 0 4px;color:#17613f;font-weight:800;">현장부</p>
+<p style="margin:0;color:#62676d;font-size:9pt;">괴이 사건 출동, 조사, 제압, 귀결 집행 및 사맥 대응</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:15px;background:#ffffff;border:1px solid #d8e4ea;border-left:4px solid #367fa5;">
+<p style="margin:0 0 4px;color:#265f7a;font-weight:800;">연구부</p>
+<p style="margin:0;color:#62676d;font-size:9pt;">괴이·내림·칠요 연구, 귀결법 및 퇴마 기술 개발</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:15px;background:#ffffff;border:1px solid #e7dfc7;border-left:4px solid #b58419;">
+<p style="margin:0 0 4px;color:#806014;font-weight:800;">지원부</p>
+<p style="margin:0;color:#62676d;font-size:9pt;">의료, 고름, 정보, 기록, 장비, 행정 및 현장 지원</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 220px;min-width:0;padding:15px;background:#ffffff;border:1px solid #ddd5f4;border-left:4px solid #7047d8;">
+<p style="margin:0 0 4px;color:#5e37c4;font-weight:800;">운영부</p>
+<p style="margin:0;color:#62676d;font-size:9pt;">인사·정책·배치·대외 업무 등 칠요국 전체 운영</p>
+</div>
+</div>
+<p style="margin:12px 0 0;color:#777b82;font-size:9pt;">운영부는 기관의 고위직이 주로 속하는 부서다</p>
+</div>
+<div style="margin-top:34px;padding:22px 4%;background:#202126;color:#e4e3e8;border-top:4px solid #7047d8;">
+<p style="margin:0 0 5px;color:#ad95ff;font-size:8pt;letter-spacing:0.16em;">EXECUTIVE BOARD</p>
+<p style="margin:0 0 15px;color:#f5f3f8;font-size:16pt;font-weight:800;">국장단</p>
+<p style="margin:0 0 7px;">칠요국의 최고위 의사결정은 한 명의 수장이 아니라 복수의 국장으로 구성된 국장단이 담당한다</p>
+<p style="margin:0 0 7px;">국장은 단순한 경력이나 행정 능력만으로 오를 수 있는 자리가 아니다</p>
+<p style="margin:0 0 7px;">오랜 세월 변주되어 온 내림 중 극소수는 변화와 변형이 적어 오방신이 인간 세계에 남긴 힘의 원형에 유난히 가까운 형태로 나타난다</p>
+<p style="margin:0 0 7px;">국장단은 이러한 내림자들을 중심으로 구성되며 각 국장은 특정 오방신의 원초적인 성질에 가까운 힘을 지닌다</p>
+<p style="margin:0 0 7px;">이는 반드시 압도적인 전투력을 의미하지 않는다</p>
+<p style="margin:0 0 16px;">국장단은 행정적 최고위층인 동시에 오방신의 힘이 현대까지 이어지고 있음을 보여주는 상징적 존재다</p>
+<p style="margin:0;padding:13px 4%;background:#302741;border-left:3px solid #7c51e8;color:#e9e0ff;text-align:center;">
+<strong>모든 내림은 신에게서 멀어진 하나의 가지이며, 국장은 그 뿌리에 가장 가까운 자들이다</strong>
+</p>
+<p style="margin:18px 0 7px;color:#c7c4cd;font-size:10pt;font-weight:700;">직급</p>
+<p style="margin:0;padding:11px 3%;background:#121317;border:1px solid #40424a;text-align:center;font-size:9.5pt;">
+국장 → 본부장 → 조장 → 상급 요원 → 일반 요원 → 수습 요원
+</p>
+<p style="margin:9px 0 0;color:#9698a0;font-size:8.8pt;">직급은 권한과 책임을 나타낼 뿐 개인의 이능 강도를 의미하지 않는다 국장직은 일반적인 승진 체계와 별개의 자격을 요구한다</p>
+</div>
+</div>
+<div style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f4f5f7;border-bottom:8px solid #111216;">
+<div style="display:flex;flex-wrap:wrap;gap:18px;">
+<div style="box-sizing:border-box;flex:1 1 250px;min-width:0;padding:22px;background:#ffffff;border:1px solid #d4d7dd;box-shadow:6px 7px 0 #e1e3e7;">
+<p style="margin:0 0 5px;color:#7047d8;font-size:8pt;letter-spacing:0.16em;">CALLSIGN · 別號</p>
+<p style="margin:0 0 15px;font-size:17pt;font-weight:800;">별호</p>
+<p style="margin:0 0 7px;">코드네임에 대응하는 개념으로 칠요국 요원은 자신을 나타내는 두 글자의 한자 조합을 별호로 사용한다</p>
+<p style="margin:0 0 7px;">성격, 이능, 과거, 가치관, 상징 등 무엇에서 착안해도 무방하다</p>
+<p style="margin:0;">별호는 독음의 중복을 허용하지만 동일한 한자 조합은 중복할 수 없다</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 260px;min-width:0;">
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<div style="box-sizing:border-box;flex:1 1 110px;padding:18px;background:#202126;color:#f2f1f5;text-align:center;border-top:3px solid #7047d8;">
+<p style="margin:0;font-size:18pt;font-weight:800;">白夜</p>
+<p style="margin:4px 0 0;color:#a89cb8;font-size:9pt;">백야</p>
+</div>
+<div style="box-sizing:border-box;flex:1 1 110px;padding:18px;background:#202126;color:#f2f1f5;text-align:center;border-top:3px solid #7047d8;">
+<p style="margin:0;font-size:18pt;font-weight:800;">白野</p>
+<p style="margin:4px 0 0;color:#a89cb8;font-size:9pt;">백야</p>
+</div>
+</div>
+<p style="margin:12px 0 0;color:#686c73;font-size:9pt;">독음이 같더라도 서로 다른 한자를 사용했다면 별개의 별호로 등록할 수 있다 별호에 칠요나 오행을 반드시 반영할 필요는 없다</p>
+</div>
+</div>
+<div style="margin-top:30px;">
+<p style="margin:0 0 4px;color:#7047d8;font-size:7pt;letter-spacing:0.15em;">REFERENCE · TERMINOLOGY</p>
+<p style="margin:0 0 13px;font-size:14pt;font-weight:800;">주요 용어 대응</p>
+<div style="display:flex;flex-wrap:wrap;gap:5px;">
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">각성</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">내림</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">센티넬</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">일맥(日脈)</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">가이드</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">월맥(月脈)</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">폭주</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">흐림</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">가이딩</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">고름</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">공명·상성</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">결</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">공명률·매칭률</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">결합도</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">페어</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">연맥(連脈)</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">페어를 맺다</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">연을 맺는다</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">코드네임</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">별호</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">적대적 초자연 존재·현상</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">괴이</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">괴이 처리</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">귀결</p></div>
+<div style="box-sizing:border-box;flex:1 1 135px;min-width:0;padding:8px 10px;background:#ffffff;border:1px solid #d9dbe0;"><p style="margin:0;color:#92959c;font-size:7pt;">빌런·범법 능력자</p><p style="margin:1px 0 0;color:#653bd1;font-size:9pt;font-weight:800;">사맥(私脈)</p></div>
+</div>
+</div>
+</div>
+<div style="box-sizing:border-box;width:100%;padding:28px 6%;background:#202126;color:#e3e1e7;text-align:center;border-top:4px solid #7047d8;">
+<p style="margin:0 0 6px;color:#ad95ff;font-size:8pt;letter-spacing:0.17em;">七曜管理局 · PRINCIPLE</p>
+<p style="margin:0;font-size:10.5pt;">칠요국의 임무는 세상을 표백하는 것이 아니며</p>
+<p style="margin:4px 0 0;font-size:10.5pt;"><strong>그저 사람이 살아갈 수 있는 형태로 균형을 유지하는 것이다</strong></p>
+</div>
+</div></div></div></div>
+</section>
+<section class="view" id="guide-view">
+<div class="content-stage"><div class="inner"><div class="document-wrap"><div style="width:100%;max-width:100%;box-sizing:border-box;overflow:hidden;background:#ebe8e1;color:#303033;font-size:11pt;line-height:1.7;border:1px solid #c8c2bb;box-shadow:0 10px 28px rgba(39,33,46,0.10);word-break:keep-all;overflow-wrap:anywhere;">
+<div style="height:4px;background:#7c6e91;"></div>
+<div style="box-sizing:border-box;width:100%;padding:22px 5%;background-color:#e2ded7;background-image:linear-gradient(rgba(76,68,84,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(76,68,84,0.04) 1px,transparent 1px);background-size:18px 18px;border-bottom:1px solid #c9c2bb;">
+<p style="margin:0 0 6px 0;color:#78698c;font-size:8.5pt;letter-spacing:0.14em;">七曜管理局 · CHARACTER REGISTRY</p>
+<p style="margin:0;color:#302b36;font-size:17pt;font-weight:700;letter-spacing:-0.04em;">캐릭터 제작 가이드</p>
+<p style="margin:8px 0 0 0;color:#6f6971;font-size:9.5pt;">아래 순서대로 정하면 칠요 세계관의 캐릭터를 간단하게 구성할 수 있다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;padding:23px 5% 27px 5%;">
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #7c6e91;">
+<p style="margin:0 0 4px 0;color:#6f6084;font-size:8.5pt;letter-spacing:0.13em;">01 · PROFILE</p>
+<p style="margin:0 0 6px 0;color:#332e38;font-size:12pt;font-weight:700;">기본 프로필</p>
+<p style="margin:0;">이름, 나이, 성별, 외형 등 기본 정보를 정한다. 칠요국 소속이라면 부서와 직급도 선택한다. 칠요국에 속하지 않은 민간 내림자나 사맥 캐릭터도 가능하다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #9b846d;">
+<p style="margin:0 0 4px 0;color:#866e58;font-size:8.5pt;letter-spacing:0.13em;">02 · 日 / 月</p>
+<p style="margin:0 0 7px 0;color:#332e38;font-size:12pt;font-weight:700;">일맥 / 월맥</p>
+<p style="margin:0 0 4px 0;color:#4e4640;">일맥(日脈) — 센티넬에 대응</p>
+<p style="margin:0 0 7px 0;color:#4e4640;">월맥(月脈) — 가이드에 대응</p>
+<p style="margin:0;color:#625e64;">일맥은 힘의 현현에, 월맥은 힘의 수용과 조율에 강점을 가지지만 전투 여부나 성격을 제한하지 않는다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #6f8978;">
+<p style="margin:0 0 4px 0;color:#617967;font-size:8.5pt;letter-spacing:0.13em;">03 · 五行</p>
+<p style="margin:0 0 8px 0;color:#332e38;font-size:12pt;font-weight:700;">오방신과 오행</p>
+<div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-bottom:9px;">
+<div style="box-sizing:border-box;flex:1 1 100px;min-width:0;padding:6px 8px;background:#dde5df;color:#53695a;border:1px solid #c4d0c7;text-align:center;">청룡 · 목</div>
+<div style="box-sizing:border-box;flex:1 1 100px;min-width:0;padding:6px 8px;background:#e8dcda;color:#805450;border:1px solid #d6c0bd;text-align:center;">주작 · 화</div>
+<div style="box-sizing:border-box;flex:1 1 100px;min-width:0;padding:6px 8px;background:#e8e0d1;color:#76674e;border:1px solid #d4c8b2;text-align:center;">황룡 · 토</div>
+<div style="box-sizing:border-box;flex:1 1 100px;min-width:0;padding:6px 8px;background:#e4e4e4;color:#626467;border:1px solid #cdced0;text-align:center;">백호 · 금</div>
+<div style="box-sizing:border-box;flex:1 1 100px;min-width:0;padding:6px 8px;background:#dce3e8;color:#536777;border:1px solid #c2ced6;text-align:center;">현무 · 수</div>
+</div>
+<p style="margin:0;">오방신은 내림의 출처이며, 오행은 그 힘이 인간에게 나타난 속성이다. 캐릭터가 어느 오방신의 힘을 내려받았는지 선택한다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #7c6e91;">
+<p style="margin:0 0 4px 0;color:#6f6084;font-size:8.5pt;letter-spacing:0.13em;">04 · ABILITY</p>
+<p style="margin:0 0 6px 0;color:#332e38;font-size:12pt;font-weight:700;">이능</p>
+<p style="margin:0;">선택한 오행의 키워드를 바탕으로 캐릭터만의 이능을 만든다. 같은 속성이라도 능력은 얼마든지 다를 수 있다. 이능의 효과, 사용 방식, 강점, 제약을 함께 정할 수 있다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #95635f;">
+<p style="margin:0 0 4px 0;color:#845753;font-size:8.5pt;letter-spacing:0.13em;">05 · STABILITY</p>
+<p style="margin:0 0 6px 0;color:#332e38;font-size:12pt;font-weight:700;">흐림과 고름</p>
+<p style="margin:0 0 5px 0;">힘이 불안정해졌을 때 흐림이 어떤 형태로 나타나는지 정한다.</p>
+<p style="margin:0;">월맥이라면 자신의 고름 방식이나 특징을 함께 설정할 수 있다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:11px;padding:14px 15px;background:#f2efe9;border-left:3px solid #607587;">
+<p style="margin:0 0 4px 0;color:#536a7b;font-size:8.5pt;letter-spacing:0.13em;">06 · LINK</p>
+<p style="margin:0 0 6px 0;color:#332e38;font-size:12pt;font-weight:700;">결 및 연맥</p>
+<p style="margin:0 0 5px 0;">특정 상대와의 관계를 만들고 싶다면 결합도와 연맥 여부를 정할 수 있다.</p>
+<p style="margin:0;color:#625e64;">연맥은 필수가 아니며, 높은 결합도가 반드시 연애 관계를 뜻하지 않는다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;margin-bottom:18px;padding:14px 15px;background:#f2efe9;border-left:3px solid #9a8765;">
+<p style="margin:0 0 4px 0;color:#7f6f53;font-size:8.5pt;letter-spacing:0.13em;">07 · 別號</p>
+<p style="margin:0 0 6px 0;color:#332e38;font-size:12pt;font-weight:700;">별호</p>
+<p style="margin:0 0 5px 0;">칠요국 요원이라면 캐릭터를 상징하는 두 글자의 한자 별호를 정한다.</p>
+<p style="margin:0;color:#625e64;">이능, 성격, 과거, 가치관, 상징물 등 무엇에서 착안해도 좋다. 독음은 다른 캐릭터와 같아도 되지만 동일한 한자 조합은 사용할 수 없다.</p>
+</div>
+<div style="box-sizing:border-box;width:100%;padding-top:18px;border-top:1px solid #c7c0b8;">
+<p style="margin:0 0 4px 0;color:#78698c;font-size:8.5pt;letter-spacing:0.14em;">SAMPLE REGISTRATION</p>
+<p style="margin:0 0 12px 0;color:#332e38;font-size:13pt;font-weight:700;">간단한 작성 예시</p>
+<div style="box-sizing:border-box;width:100%;padding:14px 15px;background:#e2ded7;border:1px solid #c6beb6;">
+<p style="margin:0 0 8px 0;color:#6f6084;font-size:13pt;font-weight:700;">殘火 · 잔화</p>
+<p style="margin:0 0 5px 0;"><b>소속</b>　칠요관리국 현장부 / 일반 요원</p>
+<p style="margin:0 0 5px 0;"><b>분류</b>　일맥(日脈)</p>
+<p style="margin:0 0 5px 0;"><b>내림</b>　주작 / 화(火)</p>
+<p style="margin:0 0 5px 0;"><b>이능</b>　접촉한 물체에 열을 축적했다가 원하는 순간 방출한다.</p>
+<p style="margin:0 0 5px 0;"><b>흐림</b>　체온과 주변 온도가 급격히 상승하며 축적한 열의 방출을 제어하지 못한다.</p>
+<p style="margin:0;"><b>연맥</b>　없음</p>
+</div>
+<p style="margin:16px 0 5px 0;color:#575259;">복잡한 설정을 처음부터 모두 정할 필요는 없다.</p>
+<p style="margin:0 0 5px 0;color:#3f3945;font-weight:700;">일맥인가 월맥인가, 어느 오방신에게서 내림을 받았는가, 그 힘이 어떤 이능으로 나타나는가.</p>
+<p style="margin:0;color:#575259;">이 세 가지에서 시작하면 나머지는 캐릭터의 이야기와 함께 자연스럽게 정하여도 무방하다.</p>
+</div>
+</div>
+</div></div></div>
+</div></section>
+<section class="view" id="roster-view">
+<div class="roster-view">
+<div class="roster-head"><div class="roster-head-inner">
+<small>七曜管理局 · PERSONNEL REGISTRY</small>
+<h2>인물 <span style="color:#a990ff">기록 열람</span></h2>
+<p>국장단 및 현장부 주요 인원의 등록 사진입니다. 보안 등급과 기록 정리 상태에 따라 열람 가능한 범위가 다릅니다.</p>
+</div></div>
+<div class="roster-sections">
+
+
+
+<section class="roster-section">
+<div class="roster-section-head"><div class="roster-section-title"><small>DIRECTORATE · 局長團</small><h3>국장단</h3></div><p class="roster-section-note">최고위 인사기록 · 상세 열람 제한</p></div>
+<div class="roster-grid"><article aria-label="정오 기록 열람" class="roster-card" data-action="restricted" data-name="正午 · 정오" role="button" style="--accent:#b58419" tabindex="0">
+<div class="roster-status locked">RESTRICTED</div><div class="id-photo"><img alt="정오" src="https://i.imgur.com/osH8Olp.jpeg"/></div>
+<div class="roster-meta"><small>黃龍 · 土 · 日脈</small><strong>正午 · 정오</strong><span>심주양</span></div></article><article aria-label="고유 기록 열람" class="roster-card" data-action="restricted" data-name="孤流 · 고유" role="button" style="--accent:#367fa5" tabindex="0">
+<div class="roster-status locked">RESTRICTED</div><div class="id-photo"><img alt="고유" src="https://i.imgur.com/egAUxNh.jpeg"/></div>
+<div class="roster-meta"><small>玄武 · 水 · 月脈</small><strong>孤流 · 고유</strong><span>현서한</span></div></article><article aria-label="만연 기록 열람" class="roster-card" data-action="restricted" data-name="蔓延 · 만연" role="button" style="--accent:#258a5b" tabindex="0">
+<div class="roster-status locked">RESTRICTED</div><div class="id-photo"><img alt="만연" src="https://i.imgur.com/YGayljp.jpeg"/></div>
+<div class="roster-meta"><small>靑龍 · 木 · 日脈</small><strong>蔓延 · 만연</strong><span>도해성</span></div></article><article aria-label="은인 기록 열람" class="roster-card" data-action="restricted" data-name="銀刃 · 은인" role="button" style="--accent:#727782" tabindex="0">
+<div class="roster-status locked">RESTRICTED</div><div class="id-photo"><img alt="은인" src="https://i.imgur.com/kaUrrkt.jpeg"/></div>
+<div class="roster-meta"><small>白虎 · 金 · 日脈</small><strong>銀刃 · 은인</strong><span>서소호</span></div></article><article aria-label="화염 기록 열람" class="roster-card" data-action="restricted" data-name="花炎 · 화염" role="button" style="--accent:#c84b45" tabindex="0">
+<div class="roster-status locked">RESTRICTED</div><div class="id-photo"><img alt="화염" src="https://i.imgur.com/vHnthcj.jpeg"/></div>
+<div class="roster-meta"><small>朱雀 · 火 · 月脈</small><strong>花炎 · 화염</strong><span>남이화</span></div></article></div>
+</section><section class="roster-section">
+<div class="roster-section-head"><div class="roster-section-title"><small>FIELD TEAM 1 · 反影</small><h3>현장부 1조 「반영」</h3></div><p class="roster-section-note">개인 프로필 열람 가능</p></div>
+<div class="roster-grid"><article aria-label="애연 기록 열람" class="roster-card" data-profile="aeyeon" role="button" style="--accent:#727782" tabindex="0">
+<div class="id-photo"><img alt="애연" src="https://i.imgur.com/NmBzm9v.jpeg"/></div>
+<div class="roster-meta"><small>白虎 · 金 · 日脈</small><strong>愛緣 · 애연</strong><span>Robert Boniek</span></div></article><article aria-label="단정 기록 열람" class="roster-card" data-profile="danjeong" role="button" style="--accent:#b58419" tabindex="0">
+<div class="id-photo"><img alt="단정" src="https://i.imgur.com/dT0osXa.jpeg"/></div>
+<div class="roster-meta"><small>黃龍 · 土 · 月脈</small><strong>單錠 · 단정</strong><span>설재영</span></div></article><article aria-label="천하 기록 열람" class="roster-card" data-profile="cheonha" role="button" style="--accent:#367fa5" tabindex="0">
+<div class="id-photo"><img alt="천하" src="https://i.imgur.com/xxjvjbR.jpeg"/></div>
+<div class="roster-meta"><small>玄武 · 水 · 月脈</small><strong>川河 · 천하</strong><span>허중현</span></div></article><article aria-label="유희 기록 열람" class="roster-card" data-profile="yuhui" role="button" style="--accent:#c84b45" tabindex="0">
+<div class="id-photo"><img alt="유희" src="https://i.imgur.com/1WrQ0tK.jpeg"/></div>
+<div class="roster-meta"><small>朱雀 · 火 · 日脈</small><strong>由嬉 · 유희</strong><span>Javier Márquez</span></div></article><article aria-label="수성 기록 열람" class="roster-card" data-profile="suseong" role="button" style="--accent:#258a5b" tabindex="0">
+<div class="id-photo"><img alt="수성" src="https://i.imgur.com/iv0Kqmm.jpeg"/></div>
+<div class="roster-meta"><small>靑龍 · 木 · 日脈</small><strong>收成 · 수성</strong><span>명세하</span></div></article></div>
+</section><section class="roster-section">
+<div class="roster-section-head"><div class="roster-section-title"><small>FIELD TEAM 2 · 歸映</small><h3>현장부 2조 「귀영」</h3></div><p class="roster-section-note">개인 프로필 문서 정리 중</p></div>
+<div class="roster-grid"><article aria-label="소마 기록 열람" class="roster-card" data-action="preparing" data-name="蘇摩 · 소마" role="button" style="--accent:#258a5b" tabindex="0">
+<div class="roster-status prep">PREPARING</div><div class="id-photo"><img alt="소마" src="https://i.imgur.com/KsNoBAE.png"/></div>
+<div class="roster-meta"><small>靑龍 · 木 · 日脈</small><strong>蘇摩 · 소마</strong><span>태해벽</span></div></article><article aria-label="주우 기록 열람" class="roster-card" data-action="preparing" data-name="朱羽 · 주우" role="button" style="--accent:#c84b45" tabindex="0">
+<div class="roster-status prep">PREPARING</div><div class="id-photo"><img alt="주우" src="https://i.imgur.com/8B9vIwf.png"/></div>
+<div class="roster-meta"><small>朱雀 · 火 · 日脈</small><strong>朱羽 · 주우</strong><span>도단화</span></div></article><article aria-label="지호 기록 열람" class="roster-card" data-action="preparing" data-name="地護 · 지호" role="button" style="--accent:#b58419" tabindex="0">
+<div class="roster-status prep">PREPARING</div><div class="id-photo"><img alt="지호" src="https://i.imgur.com/J43VqpD.png"/></div>
+<div class="roster-meta"><small>黃龍 · 土 · 日脈</small><strong>地護 · 지호</strong><span>서녹림</span></div></article><article aria-label="부동 기록 열람" class="roster-card" data-action="preparing" data-name="不動 · 부동" role="button" style="--accent:#727782" tabindex="0">
+<div class="roster-status prep">PREPARING</div><div class="id-photo"><img alt="부동" src="https://i.imgur.com/nkiOAAB.png"/></div>
+<div class="roster-meta"><small>白虎 · 金 · 日脈</small><strong>不動 · 부동</strong><span>진언</span></div></article><article aria-label="한경 기록 열람" class="roster-card" data-action="preparing" data-name="寒鏡 · 한경" role="button" style="--accent:#367fa5" tabindex="0">
+<div class="roster-status prep">PREPARING</div><div class="id-photo"><img alt="한경" src="https://i.imgur.com/b4M51Ys.png"/></div>
+<div class="roster-meta"><small>玄武 · 水 · 日脈</small><strong>寒鏡 · 한경</strong><span>신휘묵</span></div></article></div>
+</section></div></div>
+</section>
+</main>
+</div>
+<div aria-hidden="true" class="modal" id="profile-modal">
+<div aria-label="개인 프로필" aria-modal="true" class="modal-panel" role="dialog">
+<div class="modal-tools"><button aria-label="닫기" class="modal-close" id="modal-close">×</button></div>
+<p class="mobile-hint">아래로 스크롤하여 전체 기록 열람</p>
+<div class="modal-content" id="modal-content"></div>
+</div>
+</div>
+<template id="profile-aeyeon"><div id="aeyeon" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#fff;border-bottom:8px solid #111216"><div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch"><div style="box-sizing:border-box;flex:1 1 360px;min-width:0"><div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:#eceef1;border:1px solid #d4d7dc"><img alt="애연" src="https://i.imgur.com/B7sGoQi.jpeg" style="width:100%;height:100%;object-fit:cover;display:block"/></div></div><div style="box-sizing:border-box;flex:1 1 300px;min-width:0;padding:22px;background:#f5f6f8;border-top:4px solid #727782"><p style="margin:0 0 5px;color:#626872;font-size:8pt;letter-spacing:0.16em">白虎 · 金 · 日脈</p><p style="margin:0;color:#16171b;font-size:28px;font-weight:800">愛緣 <span style="font-size:16px;color:#727782">― 애연</span></p><p style="margin:6px 0 18px;color:#52565e;font-weight:700">누구도 예외 삼지 않는 박애주의자</p><hr style="border:0;border-top:1px solid #d1d4d9;margin:0 0 17px"><p style="margin:0 0 4px;color:#888c94;font-size:8pt">NAME</p><p style="margin:0 0 13px;font-weight:800">로베르트 보니에크 (Robert Boniek)</p><p style="margin:0;font-size:9.5pt">남성 · 29세 · 187cm<br>폴란드 / 한국·폴란드 혼혈<br>현장부 1조 상급 요원<br>일맥 · 백호 / 금(金)<br>주무장 · 표준형 반자동 권총</br></br></br></br></p></hr></div></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#f5f6f8;border-left:4px solid #727782"><p style="margin:0 0 7px;color:#4d515a;font-size:11.5pt;font-weight:800">PERSONALITY</p><p style="margin:0">금발과 선명한 푸른 눈을 지닌 화려한 미남<br>밝고 능청스러우며 호감과 애정을 자연스럽게 표현하는 사교적 성격</br></p></div><div style="box-sizing:border-box;flex:2 1 360px;min-width:0;padding:18px;background:#202126;color:#e9eaed;border-top:4px solid #727782"><p style="margin:0 0 4px;color:#aeb2ba;font-size:8pt;letter-spacing:0.13em">ABILITY</p><p style="margin:0 0 4px;font-size:14pt;font-weight:800">一視同仁 · 일시동인</p><p style="margin:0 0 12px;color:#babdc4;font-size:9pt"><i>한결같이 보고, 똑같이 대한다</i></p><p style="margin:0;font-size:9.5pt">둘 이상의 대상을 은빛 사슬로 연결한다<br>연결된 대상 중 하나가 공격받으면 그 타격은 전원에게 동일하게 관철된다<br/>연결 인원이 많을수록 위력이 상승하며 단일 대상만으로는 발동할 수 없다</br></p></div></div><p style="margin:14px 0 0;padding:11px 14px;background:#f2f3f5;border-left:3px solid #727782;color:#555961;font-size:9pt"><b>특별 기록</b> · 칠요국 타 부서에 근무하는 옛 연인과 비교적 친밀한 관계를 유지 중</p></div></template>
+<template id="profile-danjeong"><div id="danjeong" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f4f5f7;border-bottom:8px solid #111216"><div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch"><div style="box-sizing:border-box;flex:1 1 300px;min-width:0;padding:22px;background:#fff;border:1px solid #e2dccb;border-top:4px solid #b58419"><p style="margin:0 0 5px;color:#806014;font-size:8pt;letter-spacing:0.16em">黃龍 · 土 · 月脈</p><p style="margin:0;color:#16171b;font-size:28px;font-weight:800">單錠 <span style="font-size:16px;color:#b58419">― 단정</span></p><p style="margin:6px 0 18px;color:#806014;font-weight:700">단 하나의 잠금쇠</p><hr style="border:0;border-top:1px solid #ddd9ce;margin:0 0 17px"><p style="margin:0 0 4px;color:#91866d;font-size:8pt">NAME</p><p style="margin:0 0 13px;font-weight:800">설재영 (說再影)</p><p style="margin:0;font-size:9.5pt">남성 · 30세 · 182cm · 한국<br/>현장부 1조 상급 요원<br/>월맥 · 황룡 / 토(土)<br/>언령사 가주 · 주무장: 부적</p></hr></div><div style="box-sizing:border-box;flex:1 1 360px;min-width:0"><div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:#eceef1;border:1px solid #ded8c9"><img alt="단정" src="https://i.imgur.com/qESmM5L.jpeg" style="width:100%;height:100%;object-fit:cover;display:block"/></div></div></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#fff;border-left:4px solid #b58419"><p style="margin:0 0 7px;color:#806014;font-size:11.5pt;font-weight:800">PERSONALITY</p><p style="margin:0">은발과 붉은 눈의 곱상한 귀공자상<br/>결벽적이고 완벽주의적이며 자기검열이 심하다<br/>평소에는 정중한 존댓말을 쓰며 언령 사용 시에만 짧은 명령형 반말로 바뀐다</p></div><div style="box-sizing:border-box;flex:2 1 360px;min-width:0;padding:18px;background:#202126;color:#e9eaed;border-top:4px solid #b58419"><p style="margin:0 0 4px;color:#d0b96f;font-size:8pt;letter-spacing:0.13em">ABILITY</p><p style="margin:0 0 4px;font-size:14pt;font-weight:800">各得其所 · 각득기소</p><p style="margin:0 0 12px;color:#c8c0aa;font-size:9pt"><i>각자가 있어야 할 자리를 얻는다</i></p><p style="margin:0;font-size:9.5pt">오행을 실은 종이를 대상에게 붙여 그 순간의 위치를 ‘자리’로 고정한다<br/>벗어나려 할수록 공간의 저항과 중압이 강해진다<br/>가문의 언령으로 대상을 움직인 뒤 부적으로 그 자리를 잠그는 식으로 연계한다</p></div></div><p style="margin:14px 0 0;padding:11px 14px;background:#fffaf0;border-left:3px solid #b58419;color:#625b4a;font-size:9pt"><b>특별 기록</b> · 형 대신 가주 자리를 계승했다</p></div></template>
+<template id="profile-cheonha"><div id="cheonha" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#fff;border-bottom:8px solid #111216"><div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch"><div style="box-sizing:border-box;flex:1 1 360px;min-width:0"><div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:#edf2f5;border:1px solid #d8e4ea"><img alt="천하" src="https://i.imgur.com/5XSvdn5.jpeg" style="width:100%;height:100%;object-fit:cover;display:block"/></div></div><div style="box-sizing:border-box;flex:1 1 300px;min-width:0;padding:22px;background:#f4f9fc;border:1px solid #d8e4ea;border-top:4px solid #367fa5"><p style="margin:0 0 5px;color:#367fa5;font-size:8pt;letter-spacing:0.16em">玄武 · 水 · 月脈</p><p style="margin:0;color:#16171b;font-size:28px;font-weight:800">川河 <span style="font-size:16px;color:#367fa5">― 천하</span></p><p style="margin:6px 0 18px;color:#265f7a;font-weight:700">지나가게 두는 사람</p><hr style="border:0;border-top:1px solid #d3e0e6;margin:0 0 17px"/><p style="margin:0 0 4px;color:#6d8795;font-size:8pt">NAME</p><p style="margin:0 0 13px;font-weight:800">허중현 (許中現)</p><p style="margin:0;font-size:9.5pt">남성 · 34세 · 190cm · 한국<br/>현장부 1조 조장<br/>월맥 · 현무 / 수(水)<br/>주무장 · 전술 톤파</p></div></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#f4f9fc;border-left:4px solid #367fa5"><p style="margin:0 0 7px;color:#265f7a;font-size:11.5pt;font-weight:800">PERSONALITY</p><p style="margin:0">짙은 남색 머리와 검은 눈의 무뚝뚝한 장신<br/>과묵하고 실무적이며 감정의 진폭이 낮다</p></div><div style="box-sizing:border-box;flex:2 1 360px;min-width:0;padding:18px;background:#202126;color:#e9eaed;border-top:4px solid #367fa5"><p style="margin:0 0 4px;color:#79b6d6;font-size:8pt;letter-spacing:0.13em">ABILITY</p><p style="margin:0 0 4px;font-size:14pt;font-weight:800">逝者如斯 · 서자여사</p><p style="margin:0 0 12px;color:#a9c7d6;font-size:9pt"><i>흘러가는 것은 이 물과 같다</i></p><p style="margin:0;font-size:9.5pt">검푸른 ‘망각의 물’을 현현한다<br/>접촉한 대상은 직전 60초의 기억을 잃으며 장기 기억·인격·인간관계에는 영향을 받지 않는다<br/>전투 중 방금 쌓은 경험과 행동 흐름을 끊는 데 특화되어 있다</p></div></div><p style="margin:14px 0 0;padding:11px 14px;background:#eef7fb;border-left:3px solid #367fa5;color:#4c6978;font-size:9pt"><b>특별 기록</b> · 前 현장부 1조 사건의 유일한 생존자</p></div></template>
+<template id="profile-yuhui"><div id="yuhui" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#f4f5f7;border-bottom:8px solid #111216"><div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch"><div style="box-sizing:border-box;flex:1 1 300px;min-width:0;padding:22px;background:#fff7f7;border:1px solid #ecd9d8;border-top:4px solid #c84b45"><p style="margin:0 0 5px;color:#c84b45;font-size:8pt;letter-spacing:0.16em">朱雀 · 火 · 日脈</p><p style="margin:0;color:#16171b;font-size:28px;font-weight:800">由嬉 <span style="font-size:16px;color:#c84b45">― 유희</span></p><p style="margin:6px 0 18px;color:#913631;font-weight:700">현재를 남겨두지 않는 사람</p><hr style="border:0;border-top:1px solid #e4d4d3;margin:0 0 17px"/><p style="margin:0 0 4px;color:#9b7471;font-size:8pt">NAME</p><p style="margin:0 0 13px;font-weight:800">Javier Márquez (하비에르 마르케스)</p><p style="margin:0;font-size:9.5pt">남성 · 28세 · 191cm · 스페인<br/>현장부 1조 일반 요원<br/>일맥 · 주작 / 화(火)<br/>주무장 · 산탄총</p></div><div style="box-sizing:border-box;flex:1 1 360px;min-width:0"><div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:#f1eeee;border:1px solid #ead8d7"><img alt="유희" src="https://i.imgur.com/B4L2LKF.jpeg" style="width:100%;height:100%;object-fit:cover;display:block"/></div></div></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#fff7f7;border-left:4px solid #c84b45"><p style="margin:0 0 7px;color:#913631;font-size:11.5pt;font-weight:800">PERSONALITY</p><p style="margin:0">밝은 갈색 머리와 황금색 눈, 짙은 피부와 눈가 흉터를 지닌 거친 인상의 남자<br/>무례한 농담을 자주 던지고 품행도 좋지 않지만 악의는 드물다<br/>태생적으로 낙천적이고 미래를 위해 현재를 아끼는 감각이 희박하다</p></div><div style="box-sizing:border-box;flex:2 1 360px;min-width:0;padding:18px;background:#202126;color:#e9eaed;border-top:4px solid #c84b45"><p style="margin:0 0 4px;color:#e78b85;font-size:8pt;letter-spacing:0.13em">ABILITY</p><p style="margin:0 0 4px;font-size:14pt;font-weight:800">薪盡火滅 · 신진화멸</p><p style="margin:0 0 12px;color:#d8aaa7;font-size:9pt"><i>연료가 다하면 불도 꺼진다</i></p><p style="margin:0;font-size:9.5pt">생명체나 생명성을 지닌 괴이에 뜨겁지 않은 황금빛 불꽃을 피운다<br/>불꽃은 화상이나 전이를 일으키지 않고 체력·칠요·생명력·재생력 등 ‘소모 가능한 생명 자원’을 연소시킨다</p></div></div><p style="margin:14px 0 0;padding:11px 14px;background:#fff0ef;border-left:3px solid #c84b45;color:#75514f;font-size:9pt"><b>특별 기록</b> · 걸출한 기타리스트 출신</p></div></template>
+<template id="profile-suseong"><div id="suseong" style="box-sizing:border-box;width:100%;padding:34px 5%;background:#fff;border-bottom:8px solid #111216"><div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch"><div style="box-sizing:border-box;flex:1 1 360px;min-width:0"><div style="width:100%;aspect-ratio:4/3;overflow:hidden;background:#edf3f0;border:1px solid #d9e8df"><img alt="수성" src="https://i.imgur.com/TqwpWSG.jpeg" style="width:100%;height:100%;object-fit:cover;display:block"/></div></div><div style="box-sizing:border-box;flex:1 1 300px;min-width:0;padding:22px;background:#f5faf7;border:1px solid #d9e8df;border-top:4px solid #258a5b"><p style="margin:0 0 5px;color:#258a5b;font-size:8pt;letter-spacing:0.16em">靑龍 · 木 · 日脈</p><p style="margin:0;color:#16171b;font-size:28px;font-weight:800">收成 <span style="font-size:16px;color:#258a5b">― 수성</span></p><p style="margin:6px 0 18px;color:#17613f;font-weight:700">1조의 상식인</p><hr style="border:0;border-top:1px solid #d6e3dc;margin:0 0 17px"/><p style="margin:0 0 4px;color:#6d8d7c;font-size:8pt">NAME</p><p style="margin:0 0 13px;font-weight:800">명세하 (命世下)</p><p style="margin:0;font-size:9.5pt">남성 · 26세 · 184cm · 한국<br/>현장부 1조 일반 요원<br/>일맥 · 청룡 / 목(木)<br/>주무장 · 거대 낫 / 보조 · 수확 게이지 밴드</p></div></div><div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px"><div style="box-sizing:border-box;flex:1 1 280px;min-width:0;padding:18px;background:#f5faf7;border-left:4px solid #258a5b"><p style="margin:0 0 7px;color:#17613f;font-size:11.5pt;font-weight:800">PERSONALITY</p><p style="margin:0">검은 머리와 분홍색 눈을 지닌 앳된 인상<br/>무덤덤하고 시크하며 현실적인 상식인으로, 오히려 선배들을 챙기고 잔소리하는 역할을 맡는다</p></div><div style="box-sizing:border-box;flex:2 1 360px;min-width:0;padding:18px;background:#202126;color:#e9eaed;border-top:4px solid #258a5b"><p style="margin:0 0 4px;color:#71c89d;font-size:8pt;letter-spacing:0.13em">ABILITY</p><p style="margin:0 0 4px;font-size:14pt;font-weight:800">春種秋收 · 춘종추수</p><p style="margin:0 0 12px;color:#a4ceb9;font-size:9pt"><i>봄에 씨를 심고, 가을에 거둔다</i></p><p style="margin:0;font-size:9.5pt">대상에게 씨앗을 심어 숙주의 생명력과 칠요를 양분으로 성장시킨다<br/>숙주가 적극적으로 힘을 소비할수록 수확 게이지가 오른다<br/>충분히 여물면 축적된 힘을 거두어 거대 낫을 현현하고 전장 전체에 압도적인 광역 공격을 가한다<br/>문제는 ‘적당히’ 공격하기 어렵다는 점</p></div></div><p style="margin:14px 0 0;padding:11px 14px;background:#eef9f3;border-left:3px solid #258a5b;color:#456956;font-size:9pt"><b>특별 기록</b> · 운영부 말단 수습으로 6개월 근무했으나 압도적인 이능 출력과 전투 적성 때문에 현장부로 차출되었다</p></div></template>
+<script>
+const views=["home","world","guide","roster"];
+const modal=document.getElementById("profile-modal");
+const modalContent=document.getElementById("modal-content");
+const closeBtn=document.getElementById("modal-close");
+let lastFocus=null;
+
+function showView(name){
+if(!views.includes(name))name="home";
+document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===name+"-view"));
+document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
+history.replaceState(null,"","#"+name);
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.addEventListener("click",e=>{
+const jump=e.target.closest("[data-view]");
+if(jump){showView(jump.dataset.view);return}
+const card=e.target.closest("[data-profile],[data-action]");
+if(card){openRosterCard(card)}
+});
+
+document.querySelectorAll("[data-profile],[data-action]").forEach(card=>{
+card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openRosterCard(card)}});
+});
+
+function openRosterCard(card){
+if(card.dataset.profile){openProfile(card.dataset.profile,card);return}
+lastFocus=card;
+const name=card.dataset.name||"PERSONNEL FILE";
+if(card.dataset.action==="restricted"){
+modalContent.innerHTML=`<div class="archive-placeholder"><div class="archive-placeholder-card"><div class="archive-placeholder-top"><small>七曜管理局 · SECURITY CONTROL</small></div><div class="archive-placeholder-body"><p class="archive-placeholder-code">DIRECTORATE PERSONNEL FILE</p><h3>${name}</h3><p>요청한 상세 인사기록은 현재 공개 열람 대상이 아닙니다.<br>국장단 개인 기록은 보안 등급에 따라 접근이 제한되어 있습니다.</p><span class="archive-placeholder-stamp restricted">閱覽不可 · ACCESS DENIED</span></div></div></div>`;
+}else{
+modalContent.innerHTML=`<div class="archive-placeholder"><div class="archive-placeholder-card"><div class="archive-placeholder-top"><small>七曜管理局 · PERSONNEL ARCHIVE</small></div><div class="archive-placeholder-body"><p class="archive-placeholder-code">FIELD TEAM 2 · 歸映</p><h3>${name}</h3><p>개인 프로필 문서를 정리하고 있습니다.<br>등록 사진과 기본 인사정보만 우선 공개되었으며, 상세 기록은 준비가 끝난 뒤 열람할 수 있습니다.</p><span class="archive-placeholder-stamp">FILE PREPARING · 整理中</span></div></div></div>`;
+}
+modal.classList.add("open");
+modal.setAttribute("aria-hidden","false");
+document.body.classList.add("no-scroll");
+closeBtn.focus();
+}
+
+function openProfile(id,source){
+const tpl=document.getElementById("profile-"+id);
+if(!tpl)return;
+lastFocus=source||document.activeElement;
+modalContent.innerHTML=tpl.innerHTML;
+modal.classList.add("open");
+modal.setAttribute("aria-hidden","false");
+document.body.classList.add("no-scroll");
+closeBtn.focus();
+}
+
+function closeProfile(){
+modal.classList.remove("open");
+modal.setAttribute("aria-hidden","true");
+modalContent.innerHTML="";
+document.body.classList.remove("no-scroll");
+if(lastFocus)lastFocus.focus();
+}
+
+closeBtn.addEventListener("click",closeProfile);
+modal.addEventListener("click",e=>{if(e.target===modal)closeProfile()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("open"))closeProfile()});
+
+const initial=location.hash.replace("#","");
+if(views.includes(initial))showView(initial);
+</script>
+</body>
+</html>
